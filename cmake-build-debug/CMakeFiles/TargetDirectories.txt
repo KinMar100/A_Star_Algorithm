@@ -1,0 +1,3 @@
+C:/Users/Kinga/Documents/GitHub/A_Star_Algorithm/cmake-build-debug/CMakeFiles/a_star_algorythm.dir
+C:/Users/Kinga/Documents/GitHub/A_Star_Algorithm/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/Kinga/Documents/GitHub/A_Star_Algorithm/cmake-build-debug/CMakeFiles/rebuild_cache.dir
