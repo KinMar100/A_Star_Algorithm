@@ -1,3 +1,24 @@
 # ninja log v5
-1	1577	7234409390422678	CMakeFiles/a_star_algorythm.dir/main.cpp.obj	9acd246e9a4866c7
-1580	1677	7234409391392684	a_star_algorythm.exe	695c4eb6c48931aa
+6	2924	7236460585832945	CMakeFiles/a_star_algorythm.dir/main.cpp.obj	9acd246e9a4866c7
+2925	3124	7236460587700657	a_star_algorythm.exe	695c4eb6c48931aa
+5	377	7236461698607784	build.ninja	9cfc91ebe50b2edd
+5	2527	7236463819862606	CMakeFiles/a_star_algorythm.dir/main.cpp.obj	9acd246e9a4866c7
+2528	2725	7236463821676966	a_star_algorythm.exe	695c4eb6c48931aa
+5	2771	7236464008906472	CMakeFiles/a_star_algorythm.dir/main.cpp.obj	9acd246e9a4866c7
+2772	2962	7236464010668051	a_star_algorythm.exe	695c4eb6c48931aa
+4	1839	7236467100291541	CMakeFiles/a_star_algorythm.dir/main.cpp.obj	9acd246e9a4866c7
+1839	2009	7236467101891489	a_star_algorythm.exe	695c4eb6c48931aa
+3	1749	7236467524769322	CMakeFiles/a_star_algorythm.dir/main.cpp.obj	9acd246e9a4866c7
+1750	1911	7236467526269370	a_star_algorythm.exe	695c4eb6c48931aa
+3	1762	7236467931595598	CMakeFiles/a_star_algorythm.dir/main.cpp.obj	9acd246e9a4866c7
+1762	1920	7236467933085596	a_star_algorythm.exe	695c4eb6c48931aa
+3	1660	7236468238244737	CMakeFiles/a_star_algorythm.dir/main.cpp.obj	9acd246e9a4866c7
+1660	1804	7236468239604739	a_star_algorythm.exe	695c4eb6c48931aa
+3	1696	7236468328024313	CMakeFiles/a_star_algorythm.dir/main.cpp.obj	9acd246e9a4866c7
+1697	1831	7236468329264320	a_star_algorythm.exe	695c4eb6c48931aa
+3	1693	7236468914008992	CMakeFiles/a_star_algorythm.dir/main.cpp.obj	9acd246e9a4866c7
+1694	1851	7236468915558986	a_star_algorythm.exe	695c4eb6c48931aa
+3	2024	7236479116390980	CMakeFiles/a_star_algorythm.dir/main.cpp.obj	9acd246e9a4866c7
+2024	2195	7236479117997514	a_star_algorythm.exe	695c4eb6c48931aa
+3	1718	7236479329280642	CMakeFiles/a_star_algorythm.dir/main.cpp.obj	9acd246e9a4866c7
+1718	1860	7236479330610642	a_star_algorythm.exe	695c4eb6c48931aa

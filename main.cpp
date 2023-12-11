@@ -10,30 +10,35 @@ using namespace std;
 const int ROWS = 20;
 const int COLUMNS = 20;
 const int OBSTACLE = 5;
-const int START_ROW = 0;
-const int START_COL = 0;
-const int GOAL_ROW = 19;
-const int GOAL_COL = 19;
+const int START_ROW = 4;
+const int START_COL = 5;
+const int GOAL_ROW = 17;
+const int GOAL_COL = 17;
+
 
 struct Node {
+    // zmienne dotyczące wierszy i kolumn
     int row, col;
+    // funkcje dotyczące przeliczania heurystyki
     int g, h, f;
     Node* parent;
 
     Node(int r, int c) : row(r), col(c), g(0), h(0), f(0), parent(nullptr) {}
 
     // Funkcja przeliczająca heurystykę
-    void calculateHeuristic()
+    void calcHeuristic()
     {
         h = int(hypot(GOAL_ROW - row, GOAL_COL - col));
     }
 };
 
+//Tablica otwarta
 vector<Node*> openList;
+//Tablica zamknięta
 vector<Node*> closedList;
 
 // Funkcja sprawdzająca, czy dana pozycja jest na mapie i czy nie jest przeszkodą (piątką)
-bool isValid(int row, int col, int** grid) {
+bool isValidate(int row, int col, int** grid) {
     if (row >= 0 && row < ROWS && col >= 0 && col < COLUMNS && grid[row][col] != OBSTACLE)
     {
         return true;
@@ -69,7 +74,7 @@ bool isInClosedList(int row, int col) {
 void reconstructPath(Node* current, int** grid) {
     cout << "Optymalna sciezka (punkty): ";
     while (current != nullptr) {
-        cout << "(" << current->row << "," << current->col << ") ";
+        cout << "[" << current->row << "," << current->col << "] ";
         grid[current->row][current->col] = 3;
         current = current->parent;
     }
@@ -77,31 +82,49 @@ void reconstructPath(Node* current, int** grid) {
 }
 
 // Funkcja implementująca algorytm A*
-void AStar(int** grid) {
+void AStar(int** G) {
+    openList.clear();
+    closedList.clear();
     Node* startNode = new Node(START_ROW, START_COL);
-    startNode->calculateHeuristic();
+
+    if (G[GOAL_ROW][GOAL_COL] == OBSTACLE || !isValidate(START_ROW, START_COL, G) || !isValidate(GOAL_ROW, GOAL_COL, G))
+    {
+        cout << "Nie mozna znalesc sciezki, element docelowy jest przeszkoda!"<< endl;
+        return;
+    }
+
+    // Przeliczenie heurystyki od węzła początkowego - Node(0,0)
+    startNode->calcHeuristic();
+    // Dodanie węzła na otwartą listę
     openList.push_back(startNode);
 
+    // Póki lista otwarta nie jest pusta, ma się wykonywać przejscie węzła z jednego na drugi
     while (!openList.empty())
     {
+        //rozpoczęcie od pierwszego elementu na otwartej liście
         Node* current = openList[0];
-        for (Node* node : openList) {
-            if (node->f < current->f || (node->f == current->f && node->h < current->h)) {
+        for (Node* node : openList)
+        {
+            //sprawdzenie dla zgodności heurytyki, czy można dany węzeł
+            // w pętli umieścić na aktualnym - current
+            if (node->f < current->f || (node->f == current->f && node->h < current->h))
+            {
                 current = node;
             }
         }
 
         openList.erase(remove(openList.begin(), openList.end(), current), openList.end());
+        // dodanie na zamkniętą liste węzła (elementu)
         closedList.push_back(current);
 
         if (current->row == GOAL_ROW && current->col == GOAL_COL) {
             // gdy cel jest osiągnięty, przekształca ścieżkę
-            reconstructPath(current, grid);
+            reconstructPath(current, G);
             break;
         }
-
+        // for (int i = -1; i <= 1; ++1)
         // Generacja sąsiadów
-        for (int i = -1; i <= 1; ++i)
+        for (int i = 1; i >= -1; --i)
         {
             for (int j = -1; j <= 1; ++j)
             {
@@ -110,19 +133,26 @@ void AStar(int** grid) {
                     continue;
                 }
 
+                //zaznaczenie kolejnego elementu (węzła) dla pozycji i, j
                 int newRow = current->row + i;
                 int newCol = current->col + j;
 
-                if (isValid(newRow, newCol, grid)) {
+                // wykona się jeśli element jest na mapie - jest poprawny
+                if (isValidate(newRow, newCol, G)) {
+                    // jeśli element jest w zamknietej liscie to idzie dalej
                     if (isInClosedList(newRow, newCol)) continue;
 
-                    int tentativeG = current->g + 1; // powiekszenie kosztu o 1
+                    // powiekszenie kosztu o 1
+                    int tentativeG = current->g + 1;
 
+                    // węzeł określający "następnika"
                     Node* successor;
 
+                    // przeliczenie heurystyki
                     if (!isInOpenList(newRow, newCol)) {
                         successor = new Node(newRow, newCol);
-                        successor->calculateHeuristic();
+                        successor->calcHeuristic();
+                        //dodanie następnika na otwartą listę
                         openList.push_back(successor);
                     }
                     else {
@@ -130,21 +160,29 @@ void AStar(int** grid) {
                                           [=](const Node* n) { return n->row == newRow && n->col == newCol; });
                         successor = *it;
 
-                        if (tentativeG >= successor->g) continue; // idzie dalej sciezką
+                        //dalsza droga po ścieżce
+                        if (tentativeG >= successor->g) continue;
                     }
 
-                    // Update
+                    // Aktualizacja, że następnik po rodzicu w następnej iteracji
+                    // pętli while będzie tym aktualnym - current
                     successor->parent = current;
+                    // próbna funkcja g dla następnika
                     successor->g = tentativeG;
+                    // próbna funkcja f bedzie wykorzytsaniem heurystyki przy następnym przejściu przez ścieżke
                     successor->f = successor->g + successor->h;
                 }
             }
         }
     }
 
-    // Clean up memory
-    for (Node* node : openList) delete node;
-    for (Node* node : closedList) delete node;
+    // Wyczyszczenie pamięci po użyciu algorytmu
+    for (Node* node : openList) {
+        delete node;
+    }
+    for (Node* node : closedList){
+        delete node;
+    }
 }
 
 void displayGrid(int** grid) {
